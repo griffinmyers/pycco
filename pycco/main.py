@@ -470,14 +470,14 @@ def process_file(file, root, outdir, language=None, name=None):
     print 'pycco = {0} -> {1}'.format(file, dest)
 
 def process_destination(file, root, outdir, override=None):
-    infile = os.path.split(file)[len(os.path.split(root)) - 1:]
+    infile = file.split(os.sep)[len(os.path.split(root)) - 1:]
 
     if override is not None:
         filename = '{0}.html'.format(override)
     else:
         filename = '{0}.html'.format(os.path.splitext(infile[-1])[0])
 
-    outfile = infile[:-1] + (filename,)
+    outfile = infile[:-1] + [filename]
 
     return os.path.join(outdir, *outfile)
 
