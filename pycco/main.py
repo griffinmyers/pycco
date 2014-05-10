@@ -43,6 +43,7 @@ def generate_documentation(source, outdir=None, preserve_paths=True,
 
     if not outdir:
         raise TypeError("Missing the required 'outdir' keyword argument.")
+
     code = open(source, "r").read()
     language = get_language(source, code, language=language)
     sections = parse(source, code, language)
@@ -348,7 +349,7 @@ def get_language(source, code, language=None):
         else:
             raise ValueError("Can't figure out the language!")
 
-def destination(filepath, preserve_paths=True, outdir=None):
+def destination(filepath, preserve_paths=True, outdir=None, name_override=None):
     """
     Compute the destination HTML path for an input source file path. If the
     source is `lib/example.py`, the HTML will be at `docs/example.html`
@@ -358,7 +359,7 @@ def destination(filepath, preserve_paths=True, outdir=None):
     if not outdir:
         raise TypeError("Missing the required 'outdir' keyword argument.")
     try:
-        name = re.sub(r"\.[^.]*$", "", filename)
+        name = name_override if name_override is not None else re.sub(r"\.[^.]*$", "", filename)
     except ValueError:
         name = filename
     if preserve_paths:
@@ -397,7 +398,7 @@ highlight_start = "<div class=\"highlight\"><pre>"
 # The end of each Pygments highlight block.
 highlight_end = "</pre></div>"
 
-def process(sources, preserve_paths=True, outdir=None, language=None):
+def process(sources, preserve_paths=True, outdir=None, language=None, name=None):
     """For each source file passed as argument, generate the documentation."""
 
     if not outdir:
@@ -416,7 +417,7 @@ def process(sources, preserve_paths=True, outdir=None, language=None):
 
         def next_file():
             s = sources.pop(0)
-            dest = destination(s, preserve_paths=preserve_paths, outdir=outdir)
+            dest = destination(s, preserve_paths=preserve_paths, outdir=outdir, name_override=name)
 
             try:
                 os.makedirs(path.split(dest)[0])
@@ -424,14 +425,104 @@ def process(sources, preserve_paths=True, outdir=None, language=None):
                 pass
 
             with open(dest, "w") as f:
-                f.write(generate_documentation(s, preserve_paths=preserve_paths, outdir=outdir,
-                                               language=language))
+                f.write(generate_documentation(s, preserve_paths=preserve_paths, outdir=outdir, language=language))
 
             print "pycco = %s -> %s" % (s, dest)
 
             if sources:
                 next_file()
         next_file()
+
+def process_package(root, outdir, language=None):
+    """
+    This creates an entire source documentation tree in the /docs/ folder within
+    root.
+
+    All source files will be converted to equivalent html files.
+
+    If a directory has a README*, it will be used for the index.
+    """
+
+    ensure_directory(outdir)
+
+    with open(path.join(outdir, 'pycco.css'), 'w') as f:
+        f.write(pycco_styles)
+
+    for dirname, dirnames, filenames in os.walk(root):
+        for filename in filenames:
+            if filename.split('.')[0] == 'README':
+                process_file(os.path.join(dirname, filename), root, outdir, language=language, name='index')
+            else:
+                process_file(os.path.join(dirname, filename), root, outdir, language=language)
+
+def process_file(file, root, outdir, language=None, name=None):
+
+    dest = process_destination(file, root, outdir, override=name)
+
+    try:
+        os.makedirs(path.split(dest)[0])
+    except OSError:
+        pass
+
+    with open(dest, "w") as f:
+        f.write(process_documentation(file, root, outdir, language=language))
+
+    print 'pycco = {0} -> {1}'.format(file, dest)
+
+def process_destination(file, root, outdir, override=None):
+    infile = os.path.split(file)[len(os.path.split(root)) - 1:]
+
+    if override is not None:
+        filename = '{0}.html'.format(override)
+    else:
+        filename = '{0}.html'.format(os.path.splitext(infile[-1])[0])
+
+    outfile = infile[:-1] + (filename,)
+
+    return os.path.join(outdir, *outfile)
+
+def process_documentation(file, root, outdir, language=None):
+    """
+    Generate the documentation for a file file by reading it in, splitting it
+    up into comment/code sections, highlighting them for the appropriate
+    language, and merging them into an HTML template.
+    """
+
+    code = open(file, "r").read()
+    language = get_language(file, code, language=language)
+    sections = parse(file, code, language)
+    highlight(file, sections, language, preserve_paths=True, outdir=outdir)
+    return process_html(file, root, outdir, sections)
+
+def process_html(file, root, outdir, sections):
+    """
+    Once all of the code is finished highlighting, we can generate the HTML file
+    and write out the documentation. Pass the completed sections into the
+    template found in `resources/pycco.html`.
+
+    Pystache will attempt to recursively render context variables, so we must
+    replace any occurences of `{{`, which is valid in some languages, with a
+    "unique enough" identifier before rendering, and then post-process the
+    rendered template and change the identifier back to `{{`.
+    """
+
+    title = path.basename(file)
+    dest = process_destination(file, root, outdir)
+    csspath = path.relpath(path.join(outdir, "pycco.css"), path.split(dest)[0])
+
+    for sect in sections:
+        sect["code_html"] = re.sub(r"\{\{", r"__DOUBLE_OPEN_STACHE__", sect["code_html"])
+
+    rendered = pycco_template({
+        "title"       : title,
+        "stylesheet"  : csspath,
+        "sections"    : sections,
+        "source"      : file,
+        "path"        : path,
+        "destination" : destination
+    })
+
+    return re.sub(r"__DOUBLE_OPEN_STACHE__", "{{", rendered).encode("utf-8")
 
 __all__ = ("process", "generate_documentation")
 
@@ -496,10 +587,15 @@ def main():
     parser.add_option('-l', '--force-language', action='store', type='string',
                       dest='language', default=None,
                       help='Force the language for the given files')
+
+    parser.add_option('-r', '--root', type='string', default=None, help='If --root is provided, it should point to the root dir of the project. All sources provided will be ignored. README.* files will become index.html, along with any __init__.py in a dir off the root.')
+
     opts, sources = parser.parse_args()
 
-    process(sources, outdir=opts.outdir, preserve_paths=opts.paths,
-            language=opts.language)
+    if opts.root is not None:
+        process_package(opts.root, outdir=opts.outdir, language=opts.language)
+    else:
+        process(sources, outdir=opts.outdir, preserve_paths=opts.paths, language=opts.language)
 
     # If the -w / --watch option was present, monitor the source directories
     # for changes and re-generate documentation for source files whenever they

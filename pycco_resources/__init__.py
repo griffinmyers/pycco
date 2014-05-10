@@ -1,5 +1,12 @@
 css = """\
 /*--------------------- Layout and Typography ----------------------------*/
+#container {
+  min-height: 100%
+}
+
+html, body {
+  height: 100%;
+}
 body {
   font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
   font-size: 16px;
