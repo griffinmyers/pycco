@@ -1,7 +1,12 @@
 This mod of pycco creates documenation for an entire project.
 
-It's pretty simple. Use the `--root` option of the script and point it at the
-root of your project. It'll pop up in `docs`.
+It's pretty simple.
+
+```bash
+pycco -r .
+```
+
+Now check out `docs/`.
 
 Your docs should follow the same file structure as your code base. The README
 at the root of your project will become `index.html`. Also, any README or
