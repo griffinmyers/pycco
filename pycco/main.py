@@ -475,6 +475,27 @@ def process_file(file, root, outdir, language=None, name=None):
     except BaseException, e:
         print 'pycco = {0} failed: {1}'.format(file, e)
 
+def process_directory(directory, root, outdir):
+
+    dest = path.join(outdir, directory, 'index.html')
+
+    title = os.sep.join(directory.split(os.sep)[1:]) + '/'
+    csspath = path.relpath(path.join(outdir, "pycco.css"), path.split(dest)[0])
+
+    links = process_links(directory, root, outdir)
+
+    rendered = pycco_template({
+        "title"       : title,
+        "links"       : links,
+        "stylesheet"  : csspath,
+        "sections"    : []
+    })
+
+    contents =  re.sub(r"__DOUBLE_OPEN_STACHE__", "{{", rendered).encode("utf-8")
+
+    with open(dest, "w") as f:
+        f.write(contents)
+
 def process_destination(file, root, outdir, override=None):
     infile = file.split(os.sep)[len(path.split(root)) - 1:]
 
@@ -537,7 +558,7 @@ def process_html(file, root, outdir, sections):
     rendered template and change the identifier back to `{{`.
     """
 
-    title = path.basename(file)
+    title = os.sep.join(file.split(os.sep)[1:])
     dest = process_destination(file, root, outdir)
     csspath = path.relpath(path.join(outdir, "pycco.css"), path.split(dest)[0])
 
@@ -547,15 +568,7 @@ def process_html(file, root, outdir, sections):
     links = []
 
     if path.splitext(path.basename(file))[0] in ['__init__', 'README']:
-        for a in set(os.listdir(path.dirname(file))) - set([path.basename(file)]):
-            if a == outdir or a == '.git':
-                continue
-            if path.isdir(path.join(path.dirname(file), a)) and '__init__.py' in [path.basename(b) for b in os.listdir(path.join(path.dirname(file), a))]:
-                links.append({ 'path': path.join(a, '__init__.html'), 'text': a + '/' })
-            elif path.isdir(path.join(path.dirname(file), a)) and 'README' in [path.splitext(path.basename(b))[0] for b in os.listdir(path.join(path.dirname(file), a))]:
-                links.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
-            else:
-                links.append({ 'path': '{0}.html'.format(path.splitext(a)[0]), 'text': a })
+        links = process_links(path.dirname(file), root, outdir, file)
 
     rendered = pycco_template({
         "title"       : title,
@@ -568,6 +581,24 @@ def process_html(file, root, outdir, sections):
     })
 
     return re.sub(r"__DOUBLE_OPEN_STACHE__", "{{", rendered).encode("utf-8")
+
+def process_links(directory, root, outdir, file=''):
+    links = []
+
+    for a in set(os.listdir(directory)) - set([path.basename(file)]):
+        if a == outdir or a == '.git':
+            continue
+        if path.isdir(path.join(directory, a)) and '__init__.py' in [path.basename(b) for b in os.listdir(path.join(directory, a))]:
+            links.append({ 'path': path.join(a, '__init__.html'), 'text': a + '/' })
+        elif path.isdir(path.join(directory, a)) and 'README' in [path.splitext(path.basename(b))[0] for b in os.listdir(path.join(directory, a))]:
+            links.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
+        elif path.isdir(path.join(directory, a)):
+            links.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
+            process_directory(path.join(directory, a), root, outdir)
+        else:
+            links.append({ 'path': '{0}.html'.format(path.splitext(a)[0]), 'text': a })
+
+    return links
 
 __all__ = ("process", "generate_documentation")
 
