@@ -465,10 +465,14 @@ def process_file(file, root, outdir, language=None, name=None):
     except OSError:
         pass
 
-    with open(dest, "w") as f:
-        f.write(process_documentation(file, root, outdir, language=language))
+    try:
+        contents = process_documentation(file, root, outdir, language=language)
+        with open(dest, "w") as f:
+            f.write(contents)
 
-    print 'pycco = {0} -> {1}'.format(file, dest)
+        print 'pycco = {0} -> {1}'.format(file, dest)
+    except BaseException, e:
+        print 'pycco = {0} failed: {1}'.format(file, e)
 
 def process_destination(file, root, outdir, override=None):
     infile = file.split(os.sep)[len(path.split(root)) - 1:]
@@ -489,7 +493,9 @@ def process_documentation(file, root, outdir, language=None):
     language, and merging them into an HTML template.
     """
 
-    code = open(file, "r").read()
+    with open(file, "r") as f:
+        code = f.read()
+
     language = get_language(file, code, language=language)
     sections = parse(file, code, language)
     highlight(file, sections, language, preserve_paths=True, outdir=outdir)
