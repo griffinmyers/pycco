@@ -264,6 +264,7 @@ import pycco_resources
 # Import our external dependencies.
 import optparse
 import os
+import os.path as path
 import pygments
 import pystache
 import re
@@ -451,9 +452,9 @@ def process_package(root, outdir, language=None):
     for dirname, dirnames, filenames in os.walk(root):
         for filename in filenames:
             if filename.split('.')[0] == 'README':
-                process_file(os.path.join(dirname, filename), root, outdir, language=language, name='index')
+                process_file(path.join(dirname, filename), root, outdir, language=language, name='index')
             else:
-                process_file(os.path.join(dirname, filename), root, outdir, language=language)
+                process_file(path.join(dirname, filename), root, outdir, language=language)
 
 def process_file(file, root, outdir, language=None, name=None):
 
@@ -470,16 +471,16 @@ def process_file(file, root, outdir, language=None, name=None):
     print 'pycco = {0} -> {1}'.format(file, dest)
 
 def process_destination(file, root, outdir, override=None):
-    infile = file.split(os.sep)[len(os.path.split(root)) - 1:]
+    infile = file.split(os.sep)[len(path.split(root)) - 1:]
 
     if override is not None:
         filename = '{0}.html'.format(override)
     else:
-        filename = '{0}.html'.format(os.path.splitext(infile[-1])[0])
+        filename = '{0}.html'.format(path.splitext(infile[-1])[0])
 
     outfile = infile[:-1] + [filename]
 
-    return os.path.join(outdir, *outfile)
+    return path.join(outdir, *outfile)
 
 def process_documentation(file, root, outdir, language=None):
     """
@@ -513,8 +514,18 @@ def process_html(file, root, outdir, sections):
     for sect in sections:
         sect["code_html"] = re.sub(r"\{\{", r"__DOUBLE_OPEN_STACHE__", sect["code_html"])
 
+    links = []
+
+    if path.splitext(path.basename(file))[0] in ['__init__', 'README']:
+        for a in set(os.listdir(path.dirname(file))) - set([path.basename(file)]):
+            if path.isdir(path.join(path.dirname(file), a)) and '__init__.py' in [path.basename(b) for b in os.listdir(path.join(path.dirname(file), a))]:
+                links.append({ 'path': path.join(a, '__init__.html'), 'text': a + '/' })
+            else:
+                links.append({ 'path': '{0}.html'.format(path.splitext(a)[0]), 'text': a })
+
     rendered = pycco_template({
         "title"       : title,
+        "links"       : links,
         "stylesheet"  : csspath,
         "sections"    : sections,
         "source"      : file,

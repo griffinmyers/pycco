@@ -1,5 +1,15 @@
 css = """\
 /*--------------------- Layout and Typography ----------------------------*/
+
+a {
+  text-decoration: none;
+  font-family: 'Monaco', monospace;
+}
+
+ul.link {
+  list-style: none;
+}
+
 #container {
   min-height: 100%
 }
@@ -223,6 +233,14 @@ html = """\
   {{/sources?}}
   <div class='section'>
     <div class='docs'><h1>{{ title }}</h1></div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section'>
+    <ul class='link'>
+    {{#links}}
+      <li><a href='{{ path }}'>{{ text }}</a></li>
+    {{/links}}
+    </ul>
   </div>
   <div class='clearall'>
   {{#sections}}
