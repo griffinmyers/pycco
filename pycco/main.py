@@ -450,11 +450,12 @@ def process_package(root, outdir, language=None):
         f.write(pycco_styles)
 
     for dirname, dirnames, filenames in os.walk(root):
-        for filename in filenames:
-            if filename.split('.')[0] == 'README':
-                process_file(path.join(dirname, filename), root, outdir, language=language, name='index')
-            else:
-                process_file(path.join(dirname, filename), root, outdir, language=language)
+        if '.git' not in dirname.split(os.sep):
+            for filename in filenames:
+                if filename.split('.')[0] == 'README':
+                    process_file(path.join(dirname, filename), root, outdir, language=language, name='index')
+                else:
+                    process_file(path.join(dirname, filename), root, outdir, language=language)
 
 def process_file(file, root, outdir, language=None, name=None):
 
@@ -496,10 +497,33 @@ def process_documentation(file, root, outdir, language=None):
     with open(file, "r") as f:
         code = f.read()
 
-    language = get_language(file, code, language=language)
-    sections = parse(file, code, language)
-    highlight(file, sections, language, preserve_paths=True, outdir=outdir)
+    try:
+        language = get_language(file, code, language=language)
+        sections = parse(file, code, language)
+        highlight(file, sections, language, preserve_paths=True, outdir=outdir)
+    except:
+        sections = [{ 'code_text': code }]
+        simple_highlight(file, sections)
+
     return process_html(file, root, outdir, sections)
+
+def simple_highlight(file, sections):
+    """
+    Highlights a single chunk of code using the **Pygments** module, and runs
+    the text of its corresponding comment through **Markdown**.
+
+    We process the entire file in a single call to Pygments by inserting little
+    marker comments between each section and then splitting the result string
+    wherever our markers occur.
+    """
+
+    output = pygments.highlight(sections[0]["code_text"].rstrip(), lexers.get_lexer_by_name(path.splitext(file)[1]), formatters.get_formatter_by_name('html'))
+    output = output.replace(highlight_start, "").replace(highlight_end, "")
+    for i, section in enumerate(sections):
+        section["code_html"] = highlight_start + output + highlight_end
+        section["docs_html"] = ''
+        section["num"] = i
+
 
 def process_html(file, root, outdir, sections):
     """
@@ -524,8 +548,12 @@ def process_html(file, root, outdir, sections):
 
     if path.splitext(path.basename(file))[0] in ['__init__', 'README']:
         for a in set(os.listdir(path.dirname(file))) - set([path.basename(file)]):
+            if a == outdir or a == '.git':
+                continue
             if path.isdir(path.join(path.dirname(file), a)) and '__init__.py' in [path.basename(b) for b in os.listdir(path.join(path.dirname(file), a))]:
                 links.append({ 'path': path.join(a, '__init__.html'), 'text': a + '/' })
+            elif path.isdir(path.join(path.dirname(file), a)) and 'README' in [path.splitext(path.basename(b))[0] for b in os.listdir(path.join(path.dirname(file), a))]:
+                links.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
             else:
                 links.append({ 'path': '{0}.html'.format(path.splitext(a)[0]), 'text': a })
 
