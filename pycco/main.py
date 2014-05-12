@@ -594,22 +594,23 @@ def process_html(file, root, outdir, sections):
     return re.sub(r"__DOUBLE_OPEN_STACHE__", "{{", rendered).encode("utf-8")
 
 def process_links(directory, root, outdir, file=''):
-    links = []
+    files = []
+    dirs = []
 
     for a in set(os.listdir(directory)) - set([path.basename(file)]):
         if a == outdir or a == '.git':
             continue
         if path.isdir(path.join(directory, a)) and '__init__.py' in [path.basename(b) for b in os.listdir(path.join(directory, a))]:
-            links.append({ 'path': path.join(a, '__init__.html'), 'text': a + '/' })
+            dirs.append({ 'path': path.join(a, '__init__.html'), 'text': a + '/' })
         elif path.isdir(path.join(directory, a)) and 'README' in [path.splitext(path.basename(b))[0] for b in os.listdir(path.join(directory, a))]:
-            links.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
+            dirs.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
         elif path.isdir(path.join(directory, a)):
-            links.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
+            dirs.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
             process_directory(path.join(directory, a), root, outdir)
         else:
-            links.append({ 'path': '{0}.html'.format(path.splitext(a)[0]), 'text': a })
+            files.append({ 'path': '{0}.html'.format(path.splitext(a)[0]), 'text': a })
 
-    return links
+    return dirs.sort() + files.sort()
 
 __all__ = ("process", "generate_documentation")
 
