@@ -510,7 +510,7 @@ def process_destination(file, root, outdir, override=None):
     if override is not None:
         filename = '{0}.html'.format(override)
     else:
-        filename = '{0}.html'.format(path.splitext(infile[-1])[0])
+        filename = '{0}.html'.format(path.splitext(infile[-1])[0].replace(".", "_"))
 
     outfile = infile[:-1] + [filename]
 
@@ -608,7 +608,7 @@ def process_links(directory, root, outdir, file=''):
             dirs.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
             process_directory(path.join(directory, a), root, outdir)
         else:
-            files.append({ 'path': '{0}.html'.format(path.splitext(a)[0]), 'text': a })
+            files.append({ 'path': '{0}.html'.format(path.splitext(a)[0]).replace(".", "_"), 'text': a })
 
     return dirs.sort() + files.sort()
 
