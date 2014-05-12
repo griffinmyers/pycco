@@ -141,6 +141,11 @@ div.clearall {
     clear: both;
 }
 
+.docs code {
+  font-size: 11px;
+  overflow-x: scroll;
+}
+
 
 /*---------------------- Syntax Highlighting -----------------------------*/
 td.linenos { background-color: #f0f0f0; padding-right: 10px; }
