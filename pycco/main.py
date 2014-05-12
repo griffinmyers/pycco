@@ -450,12 +450,15 @@ def process_package(root, outdir, language=None):
         f.write(pycco_styles)
 
     for dirname, dirnames, filenames in os.walk(root):
-        if '.git' not in dirname.split(os.sep):
-            for filename in filenames:
-                if filename.split('.')[0] == 'README':
-                    process_file(path.join(dirname, filename), root, outdir, language=language, name='index')
-                else:
-                    process_file(path.join(dirname, filename), root, outdir, language=language)
+
+        if outdir in dirnames: dirnames.remove(outdir)
+        if '.git' in dirnames: dirnames.remove('.git')
+
+        for filename in filenames:
+            if filename.split('.')[0] == 'README':
+                process_file(path.join(dirname, filename), root, outdir, language=language, name='index')
+            else:
+                process_file(path.join(dirname, filename), root, outdir, language=language)
 
 def process_file(file, root, outdir, language=None, name=None):
 
@@ -492,6 +495,11 @@ def process_directory(directory, root, outdir):
     })
 
     contents =  re.sub(r"__DOUBLE_OPEN_STACHE__", "{{", rendered).encode("utf-8")
+
+    try:
+        os.makedirs(path.split(dest)[0])
+    except OSError:
+        pass
 
     with open(dest, "w") as f:
         f.write(contents)
@@ -537,9 +545,12 @@ def simple_highlight(file, sections):
     marker comments between each section and then splitting the result string
     wherever our markers occur.
     """
+    try:
+        output = pygments.highlight(sections[0]["code_text"].rstrip(), lexers.get_lexer_by_name(path.splitext(file)[1]), formatters.get_formatter_by_name('html'))
+        output = output.replace(highlight_start, "").replace(highlight_end, "")
+    except:
+        output = sections[0]["code_text"].rstrip().decode('utf-8')
 
-    output = pygments.highlight(sections[0]["code_text"].rstrip(), lexers.get_lexer_by_name(path.splitext(file)[1]), formatters.get_formatter_by_name('html'))
-    output = output.replace(highlight_start, "").replace(highlight_end, "")
     for i, section in enumerate(sections):
         section["code_html"] = highlight_start + output + highlight_end
         section["docs_html"] = ''
