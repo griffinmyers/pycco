@@ -608,9 +608,12 @@ def process_links(directory, root, outdir, file=''):
             dirs.append({ 'path': path.join(a, 'index.html'), 'text': a + '/' })
             process_directory(path.join(directory, a), root, outdir)
         else:
-            files.append({ 'path': '{0}.html'.format(path.splitext(a)[0]).replace(".", "_"), 'text': a })
+            files.append({ 'path': '{0}.html'.format(path.splitext(a)[0].replace(".", "_")), 'text': a })
 
-    return dirs.sort() + files.sort()
+    dirs.sort()
+    files.sort()
+
+    return dirs + files
 
 __all__ = ("process", "generate_documentation")
 
