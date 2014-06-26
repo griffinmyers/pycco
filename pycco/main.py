@@ -660,6 +660,25 @@ def monitor(sources, opts):
         observer.stop()
         observer.join()
 
+def push_docs(opts, commit_message='updating docs'):
+
+    import subprocess
+
+    subprocess.check_call("git checkout -b gh-pages origin/gh-pages || (echo 'not in origin, creating.' && git branch gh-pages && git checkout gh-pages)", shell=True)
+    subprocess.check_call("rm -rf *", shell=True)
+    subprocess.check_call("git checkout master *", shell=True)
+    process_package(opts.root, outdir=opts.outdir, language=opts.language)
+    subprocess.check_call("rm -rf $(ls | grep -v docs)", shell=True)
+    subprocess.check_call("mv docs/* .", shell=True)
+    subprocess.check_call("rm -rf docs", shell=True)
+    subprocess.check_call("touch .nojekyll", shell=True)
+    subprocess.check_call("git add -A .", shell=True)
+    subprocess.check_call("git c -m '{0}' && exit 0".format(commit_message), shell=True)
+    subprocess.check_call("git fetch", shell=True)
+    subprocess.check_call("git rebase origin/gh-pages || echo 'not in origin, not rebasing.'", shell=True)
+    subprocess.check_call("git push", shell=True)
+    subprocess.check_call("git checkout master", shell=True)
+    subprocess.check_call("git branch -D gh-pages", shell=True)
 
 def main():
     """Hook spot for the console script."""
@@ -680,11 +699,15 @@ def main():
                       help='Force the language for the given files')
 
     parser.add_option('-r', '--root', type='string', default=None, help='If --root is provided, it should point to the root dir of the project. All sources provided will be ignored. README.* files will become index.html, along with any __init__.py in a dir off the root.')
+    parser.add_option('-g', '--github', action='store_true', help='If used with -r, also pushes documentation to gh-pages')
 
     opts, sources = parser.parse_args()
 
     if opts.root is not None:
-        process_package(opts.root, outdir=opts.outdir, language=opts.language)
+        if opts.github:
+            push_docs(opts)
+        else:
+            process_package(opts.root, outdir=opts.outdir, language=opts.language)
     else:
         process(sources, outdir=opts.outdir, preserve_paths=opts.paths, language=opts.language)
 
