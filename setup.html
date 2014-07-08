@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>setup.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>setup.py</h1></div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section'>
+    <ul class='link'>
+    </ul>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>,</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
+
+<span class="n">setup</span><span class="p">(</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Pycco&quot;</span><span class="p">,</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="s">&quot;0.3.0&quot;</span><span class="p">,</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;A Python port of Docco: the original quick-and-dirty,</span>
+<span class="s">        hundred-line-long, literate-programming-style documentation generator.</span>
+<span class="s">#DIVIDER</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>author = "Nick Fitzgerald",
+author_email = "fitzgen@gmail.com",
+url = "http://fitzgen.github.com/pycco",
+packages = find_packages(),
+entry_points = {
+    'console_scripts': [
+        'pycco = pycco.main:main',
+        ]
+    },
+install_requires = ['markdown', 'pygments', 'pystache', 'smartypants'],
+extras_require = {'monitoring': 'watchdog'},
+)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

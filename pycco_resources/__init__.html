@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>pycco_resources/__init__.py</title>
+  <link rel="stylesheet" href="../pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>pycco_resources/__init__.py</h1></div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section'>
+    <ul class='link'>
+    </ul>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">css</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">/*--------------------- Layout and Typography ----------------------------*/</span>
+
+<span class="s">a {</span>
+<span class="s">  text-decoration: none;</span>
+<span class="s">  font-family: &#39;Monaco&#39;, monospace;</span>
+<span class="s">}</span>
+
+<span class="s">ul.link {</span>
+<span class="s">  list-style: none;</span>
+<span class="s">}</span>
+<span class="s">#DIVIDER</span>
+<span class="s">  min-height: 100%</span>
+<span class="s">}</span>
+
+<span class="s">html, body {</span>
+<span class="s">  height: 100%;</span>
+<span class="s">}</span>
+<span class="s">body {</span>
+<span class="s">  font-family: &#39;Palatino Linotype&#39;, &#39;Book Antiqua&#39;, Palatino, FreeSerif, serif;</span>
+<span class="s">  font-size: 16px;</span>
+<span class="s">  line-height: 24px;</span>
+<span class="s">  color: #252519;</span>
+<span class="s">  margin: 0; padding: 0;</span>
+<span class="s">  background: #f5f5ff;</span>
+<span class="s">}</span>
+<span class="s">a {</span>
+<span class="s">  color: #261a3b;</span>
+<span class="s">}</span>
+<span class="s">  a:visited {</span>
+<span class="s">    color: #261a3b;</span>
+<span class="s">  }</span>
+<span class="s">p {</span>
+<span class="s">  margin: 0 0 15px 0;</span>
+<span class="s">}</span>
+<span class="s">h1, h2, h3, h4, h5, h6 {</span>
+<span class="s">  margin: 40px 0 15px 0;</span>
+<span class="s">}</span>
+<span class="s">h2, h3, h4, h5, h6 {</span>
+<span class="s">    margin-top: 0;</span>
+<span class="s">  }</span>
+<span class="s">#DIVIDER</span>
+<span class="s">  background: white;</span>
+<span class="s"> }</span>
+<span class="s">#DIVIDER</span>
+<span class="s">  position: relative;</span>
+<span class="s">}</span>
+<span class="s">#DIVIDER</span>
+<span class="s">  position: absolute;</span>
+<span class="s">  top: 0; left: 580px; right: 0; bottom: 0;</span>
+<span class="s">  background: #f5f5ff;</span>
+<span class="s">  border-left: 1px solid #e5e5ee;</span>
+<span class="s">  z-index: 0;</span>
+<span class="s">}</span>
+<span class="s">#DIVIDER</span>
+<span class="s">  background: white;</span>
+<span class="s">  -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777;</span>
+<span class="s">  -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px;</span>
+<span class="s">  font: 10px Arial;</span>
+<span class="s">  text-transform: uppercase;</span>
+<span class="s">  cursor: pointer;</span>
+<span class="s">  text-align: right;</span>
+<span class="s">}</span>
+<span class="s">#DIVIDER</span>
+<span class="s">  position: fixed;</span>
+<span class="s">  right: 0; top: 0;</span>
+<span class="s">  padding: 5px 10px;</span>
+<span class="s">}</span>
+<span class="s">#DIVIDER</span>
+<span class="s">    padding: 0;</span>
+<span class="s">    display: none;</span>
+<span class="s">  }</span>
+<span class="s">#DIVIDER</span>
+<span class="s">      display: block;</span>
+<span class="s">    }</span>
+<span class="s">#DIVIDER</span>
+<span class="s">      padding: 5px 0 3px;</span>
+<span class="s">      margin: 0 0 25px 25px;</span>
+<span class="s">    }</span>
+<span class="s">#DIVIDER</span>
+<span class="s">        display: block;</span>
+<span class="s">        padding: 5px 10px;</span>
+<span class="s">        text-decoration: none;</span>
+<span class="s">        border-top: 1px solid #eee;</span>
+<span class="s">      }</span>
+<span class="s">#DIVIDER</span>
+<span class="s">          background: #f5f5ff;</span>
+<span class="s">        }</span>
+<span class="s">#DIVIDER</span>
+<span class="s">        }</span>
+<span class="s">div.docs {</span>
+<span class="s">  float: left;</span>
+<span class="s">  max-width: 500px;</span>
+<span class="s">  min-width: 500px;</span>
+<span class="s">  min-height: 5px;</span>
+<span class="s">  padding: 10px 25px 1px 50px;</span>
+<span class="s">  vertical-align: top;</span>
+<span class="s">  text-align: left;</span>
+<span class="s">}</span>
+<span class="s">  .docs pre {</span>
+<span class="s">    margin: 15px 0 15px;</span>
+<span class="s">    padding-left: 15px;</span>
+<span class="s">  }</span>
+<span class="s">  .docs p tt, .docs p code {</span>
+<span class="s">    background: #f8f8ff;</span>
+<span class="s">    border: 1px solid #dedede;</span>
+<span class="s">    font-size: 12px;</span>
+<span class="s">    padding: 0 0.2em;</span>
+<span class="s">  }</span>
+<span class="s">  .octowrap {</span>
+<span class="s">    position: relative;</span>
+<span class="s">  }</span>
+<span class="s">    .octothorpe {</span>
+<span class="s">      font: 12px Arial;</span>
+<span class="s">      text-decoration: none;</span>
+<span class="s">      color: #454545;</span>
+<span class="s">      position: absolute;</span>
+<span class="s">      top: 3px; left: -20px;</span>
+<span class="s">      padding: 1px 2px;</span>
+<span class="s">      opacity: 0;</span>
+<span class="s">      -webkit-transition: opacity 0.2s linear;</span>
+<span class="s">    }</span>
+<span class="s">      div.docs:hover .octothorpe {</span>
+<span class="s">        opacity: 1;</span>
+<span class="s">      }</span>
+<span class="s">div.code {</span>
+<span class="s">  margin-left: 580px;</span>
+<span class="s">  padding: 14px 15px 16px 50px;</span>
+<span class="s">  vertical-align: top;</span>
+<span class="s">}</span>
+<span class="s">  .code pre, .docs p code {</span>
+<span class="s">    font-size: 12px;</span>
+<span class="s">  }</span>
+<span class="s">    pre, tt, code {</span>
+<span class="s">      line-height: 18px;</span>
+<span class="s">      font-family: Monaco, Consolas, &quot;Lucida Console&quot;, monospace;</span>
+<span class="s">      margin: 0; padding: 0;</span>
+<span class="s">    }</span>
+<span class="s">div.clearall {</span>
+<span class="s">    clear: both;</span>
+<span class="s">}</span>
+
+<span class="s">.docs code {</span>
+<span class="s">  font-size: 11px;</span>
+<span class="s">  overflow-x: scroll;</span>
+<span class="s">}</span>
+
+
+<span class="s">/*---------------------- Syntax Highlighting -----------------------------*/</span>
+<span class="s">td.linenos { background-color: #f0f0f0; padding-right: 10px; }</span>
+<span class="s">span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }</span>
+<span class="s">body .hll { background-color: #ffffcc }</span>
+<span class="s">body .c { color: #408080; font-style: italic }  /* Comment */</span>
+<span class="s">body .err { border: 1px solid #FF0000 }         /* Error */</span>
+<span class="s">body .k { color: #954121 }                      /* Keyword */</span>
+<span class="s">body .o { color: #666666 }                      /* Operator */</span>
+<span class="s">body .cm { color: #408080; font-style: italic } /* Comment.Multiline */</span>
+<span class="s">body .cp { color: #BC7A00 }                     /* Comment.Preproc */</span>
+<span class="s">body .c1 { color: #408080; font-style: italic } /* Comment.Single */</span>
+<span class="s">body .cs { color: #408080; font-style: italic } /* Comment.Special */</span>
+<span class="s">body .gd { color: #A00000 }                     /* Generic.Deleted */</span>
+<span class="s">body .ge { font-style: italic }                 /* Generic.Emph */</span>
+<span class="s">body .gr { color: #FF0000 }                     /* Generic.Error */</span>
+<span class="s">body .gh { color: #000080; font-weight: bold }  /* Generic.Heading */</span>
+<span class="s">body .gi { color: #00A000 }                     /* Generic.Inserted */</span>
+<span class="s">body .go { color: #808080 }                     /* Generic.Output */</span>
+<span class="s">body .gp { color: #000080; font-weight: bold }  /* Generic.Prompt */</span>
+<span class="s">body .gs { font-weight: bold }                  /* Generic.Strong */</span>
+<span class="s">body .gu { color: #800080; font-weight: bold }  /* Generic.Subheading */</span>
+<span class="s">body .gt { color: #0040D0 }                     /* Generic.Traceback */</span>
+<span class="s">body .kc { color: #954121 }                     /* Keyword.Constant */</span>
+<span class="s">body .kd { color: #954121; font-weight: bold }  /* Keyword.Declaration */</span>
+<span class="s">body .kn { color: #954121; font-weight: bold }  /* Keyword.Namespace */</span>
+<span class="s">body .kp { color: #954121 }                     /* Keyword.Pseudo */</span>
+<span class="s">body .kr { color: #954121; font-weight: bold }  /* Keyword.Reserved */</span>
+<span class="s">body .kt { color: #B00040 }                     /* Keyword.Type */</span>
+<span class="s">body .m { color: #666666 }                      /* Literal.Number */</span>
+<span class="s">body .s { color: #219161 }                      /* Literal.String */</span>
+<span class="s">body .na { color: #7D9029 }                     /* Name.Attribute */</span>
+<span class="s">body .nb { color: #954121 }                     /* Name.Builtin */</span>
+<span class="s">body .nc { color: #0000FF; font-weight: bold }  /* Name.Class */</span>
+<span class="s">body .no { color: #880000 }                     /* Name.Constant */</span>
+<span class="s">body .nd { color: #AA22FF }                     /* Name.Decorator */</span>
+<span class="s">body .ni { color: #999999; font-weight: bold }  /* Name.Entity */</span>
+<span class="s">body .ne { color: #D2413A; font-weight: bold }  /* Name.Exception */</span>
+<span class="s">body .nf { color: #0000FF }                     /* Name.Function */</span>
+<span class="s">body .nl { color: #A0A000 }                     /* Name.Label */</span>
+<span class="s">body .nn { color: #0000FF; font-weight: bold }  /* Name.Namespace */</span>
+<span class="s">body .nt { color: #954121; font-weight: bold }  /* Name.Tag */</span>
+<span class="s">body .nv { color: #19469D }                     /* Name.Variable */</span>
+<span class="s">body .ow { color: #AA22FF; font-weight: bold }  /* Operator.Word */</span>
+<span class="s">body .w { color: #bbbbbb }                      /* Text.Whitespace */</span>
+<span class="s">body .mf { color: #666666 }                     /* Literal.Number.Float */</span>
+<span class="s">body .mh { color: #666666 }                     /* Literal.Number.Hex */</span>
+<span class="s">body .mi { color: #666666 }                     /* Literal.Number.Integer */</span>
+<span class="s">body .mo { color: #666666 }                     /* Literal.Number.Oct */</span>
+<span class="s">body .sb { color: #219161 }                     /* Literal.String.Backtick */</span>
+<span class="s">body .sc { color: #219161 }                     /* Literal.String.Char */</span>
+<span class="s">body .sd { color: #219161; font-style: italic } /* Literal.String.Doc */</span>
+<span class="s">body .s2 { color: #219161 }                     /* Literal.String.Double */</span>
+<span class="s">body .se { color: #BB6622; font-weight: bold }  /* Literal.String.Escape */</span>
+<span class="s">body .sh { color: #219161 }                     /* Literal.String.Heredoc */</span>
+<span class="s">body .si { color: #BB6688; font-weight: bold }  /* Literal.String.Interpol */</span>
+<span class="s">body .sx { color: #954121 }                     /* Literal.String.Other */</span>
+<span class="s">body .sr { color: #BB6688 }                     /* Literal.String.Regex */</span>
+<span class="s">body .s1 { color: #219161 }                     /* Literal.String.Single */</span>
+<span class="s">body .ss { color: #19469D }                     /* Literal.String.Symbol */</span>
+<span class="s">body .bp { color: #954121 }                     /* Name.Builtin.Pseudo */</span>
+<span class="s">body .vc { color: #19469D }                     /* Name.Variable.Class */</span>
+<span class="s">body .vg { color: #19469D }                     /* Name.Variable.Global */</span>
+<span class="s">body .vi { color: #19469D }                     /* Name.Variable.Instance */</span>
+<span class="s">body .il { color: #666666 }                     /* Literal.Number.Integer.Long */</span>
+<span class="s">#DIVIDER</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>container {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>container {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>container, div.section {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>background {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>jump_to, #jump_page {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>jump_to, #jump_wrapper {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>jump_wrapper {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>jump_to:hover #jump_wrapper {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>jump_page {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>jump_page .source {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>jump_page .source:hover {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>jump_page .source:first-child {</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>html = """\
+&lt;!DOCTYPE html&gt;
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="{{ stylesheet }}">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>{{ title }}</h1></div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section'>
+    <ul class='link'>
+    {{#links}}
+      <li><a href='{{ path }}'>{{ text }}</a></li>
+    {{/links}}
+    </ul>
+  </div>
+  <div class='clearall'>
+  {{#sections}}
+  <div class='section' id='section-{{ num }}'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-{{ num }}'>#</a>
+      </div>
+      {{{ docs_html }}}
+    </div>
+    <div class='code'>
+      {{{ code_html }}}
+    </div>
+  </div>
+  <div class='clearall'></div>
+  {{/sections}}
+</div>
+</body></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
