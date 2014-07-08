@@ -6,6 +6,12 @@ It's pretty simple.
 pycco -r .
 ```
 
+or to also sync with github pages:
+
+```bash
+pycco -g -r .
+```
+
 Now check out `docs/`.
 
 Your docs should follow the same file structure as your code base. The README
@@ -13,7 +19,7 @@ at the root of your project will become `index.html`. Also, any README or
 `__init__.py` file will have links added to it that point to subdirectories and
 sibling files that file is part of.
 
-This is a pretty good choice for your `gh-pages` branch.
+[Obligatory self-documentation](http://griffinmyers.github.io/pycco)
 
     888888b.
     888   Y88b
